@@ -21,6 +21,36 @@ function createPost(titulo, contenido) {
   nuevosBlog.insertBefore(article, nuevosBlog.children[1]);
 }
 
+function savePost(event) {
+  let element = event.target;
+  let parent = element.parentElement;
+  let titulo = parent.getElementsByTagName("input")[0].value;
+  let contenido = parent.getElementsByTagName("textArea")[0].value;
+  let h3 = document.createElement("h3");
+  let p = document.createElement("p");
+  h3.innerText = titulo;
+  p.innerText = contenido;
+  parent.appendChild(h3);
+  parent.appendChild(p);
+
+  parent.getElementsByTagName("input")[0].remove();
+  parent.getElementsByTagName("textArea")[0].remove();
+  element.remove();
+
+  parent.querySelector(".fa-close").remove();
+  let iconoEditar = crearIcono("fa-pencil", editPost);
+  let iconoBorrar = crearIcono("fa-trash", deletePost);
+
+  parent.appendChild(iconoEditar);
+  parent.appendChild(iconoBorrar);
+
+  let breaks = parent.getElementsByTagName("br");
+  breaks = [...breaks];
+  breaks.forEach((element) => {
+    element.remove();
+  });
+}
+
 function deletePost(event) {
   let element = event.target;
   let parent = element.parentElement;
@@ -42,10 +72,20 @@ function cancelEdit(event, textoTitulo, textoParrafo) {
 
   parent.getElementsByTagName("input")[0].remove();
   parent.getElementsByTagName("textArea")[0].remove();
-  let iconoEditar = crearIcono("fa-pencil", editPost);
-  crearIcono("fa-pencil", editPost);
-  parent.appendChild(iconoEditar);
   element.remove();
+  parent.querySelector(".fa-save").remove();
+
+  let iconoEditar = crearIcono("fa-pencil", editPost);
+  let iconoBorrar = crearIcono("fa-trash", deletePost);
+
+  parent.appendChild(iconoEditar);
+  parent.appendChild(iconoBorrar);
+
+  let breaks = parent.getElementsByTagName("br");
+  breaks = [...breaks];
+  breaks.forEach((element) => {
+    element.remove();
+  });
 }
 
 function crearIcono(simbolo, callback) {
@@ -66,38 +106,22 @@ function editPost(event) {
   let iconoCancelar = crearIcono("fa-close", function (event) {
     cancelEdit(event, titulo, texto);
   });
-  element.remove();
+
   let iconoGuardar = crearIcono("fa-save", savePost);
 
   inputTitulo.setAttribute("type", "text");
   inputTitulo.value = titulo;
   textArea.value = texto;
 
-  parent.getElementsByTagName("h3")[0].remove();
-  parent.getElementsByTagName("p")[0].remove();
-
   parent.appendChild(inputTitulo);
   parent.appendChild(br);
   parent.appendChild(textArea);
   parent.appendChild(iconoCancelar);
   parent.appendChild(iconoGuardar);
-}
-
-function savePost(event, textoTitulo, textoParrafo) {
-  let element = event.target;
-  let parent = element.parentElement;
-  let titulo = document.createElement("h3");
-  let parrafo = document.createElement("p");
-  titulo.innerText = textoTitulo;
-  parrafo.innerText = textoParrafo;
-  parent.appendChild(titulo);
-  parent.appendChild(parrafo);
-
-  parent.getElementsByTagName("input").value.trim();
-  parent.getElementsByTagName("textArea").value.trim();
-  let iconoGuardar = crearIcono("fa-save", savePost);
-  crearIcono("fa-save", savePost);
-  parent.appendChild(iconoGuardar);
+  parent.getElementsByTagName("h3")[0].remove();
+  parent.getElementsByTagName("p")[0].remove();
+  element.remove();
+  parent.querySelector(".fa-trash").remove();
 }
 
 //evento para submit

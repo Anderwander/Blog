@@ -2,6 +2,11 @@
   background-color: aquamarine;
 }
 
+* {
+  border-radius: 5px;
+  margin: 1em;
+}
+
 .fa-trash {
   color: darkred;
 }
