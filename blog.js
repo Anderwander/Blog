@@ -1,12 +1,12 @@
-//evento para submit
-let form = document.getElementById("blogForm");
-form.addEventListener("submit", createPost);
-document.getElementById("blogForm").reset();
-
-function createPost(event) {
+function createPostEvent(event) {
   event.preventDefault();
   let titulo = document.getElementById("titulo").value.trim();
   let contenido = document.getElementById("contenido").value.trim();
+  createPost(titulo, contenido);
+  document.getElementById("blogForm").reset();
+}
+
+function createPost(titulo, contenido) {
   let h3 = document.createElement("h3");
   let p = document.createElement("p");
   let article = document.createElement("article");
@@ -19,8 +19,6 @@ function createPost(event) {
   article.appendChild(iconoEditar);
   article.appendChild(iconoBorrar);
   nuevosBlog.insertBefore(article, nuevosBlog.children[1]);
-  iconoBorrar.addEventListener("click", deletePost);
-  iconoEditar.addEventListener("click", editPost);
 }
 
 function deletePost(event) {
@@ -69,6 +67,7 @@ function editPost(event) {
     cancelEdit(event, titulo, texto);
   });
   element.remove();
+  let iconoGuardar = crearIcono("fa-save", savePost);
 
   inputTitulo.setAttribute("type", "text");
   inputTitulo.value = titulo;
@@ -81,4 +80,31 @@ function editPost(event) {
   parent.appendChild(br);
   parent.appendChild(textArea);
   parent.appendChild(iconoCancelar);
+  parent.appendChild(iconoGuardar);
 }
+
+function savePost(event, textoTitulo, textoParrafo) {
+  let element = event.target;
+  let parent = element.parentElement;
+  let titulo = document.createElement("h3");
+  let parrafo = document.createElement("p");
+  titulo.innerText = textoTitulo;
+  parrafo.innerText = textoParrafo;
+  parent.appendChild(titulo);
+  parent.appendChild(parrafo);
+
+  parent.getElementsByTagName("input").value.trim();
+  parent.getElementsByTagName("textArea").value.trim();
+  let iconoGuardar = crearIcono("fa-save", savePost);
+  crearIcono("fa-save", savePost);
+  parent.appendChild(iconoGuardar);
+}
+
+//evento para submit
+let form = document.getElementById("blogForm");
+form.addEventListener("submit", createPostEvent);
+document.getElementById("blogForm").reset();
+
+createPost("manzana", "manzananananana");
+createPost("melocoton", "con chocolate");
+createPost("nicaragua", "mi pueblo ");
